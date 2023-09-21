@@ -127,9 +127,10 @@ func(app *SryVote) Callback(w http.ResponseWriter, r *http.Request) {
 
 // Google Login
 func(app *SryVote) AddRouter(router *mux.Router) {
-   app.Srv.LineLogin.AddRouter(router)
+   app.Srv.LineLogin.AddRouter(router)		       // 加入 Line Login
    router.HandleFunc("/g/callback", app.Callback)      // Google 認證後回傳的資訊
    router.HandleFunc("/f/callback", app.Callback)      // Google 認證後回傳的資訊
+   router.HandleFunc("/vote/status", app.GetStatusFromWeb)	// 取得目前全部的投票資訊
 }
 
 func NewVote(srv *SherryServer.ShryServer)(*SryVote, error) {
