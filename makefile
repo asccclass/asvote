@@ -56,4 +56,4 @@ re:stop run
 rebuild:stop rm rmi
 
 s:
-	git push -u origin master
+	git push -u origin main
