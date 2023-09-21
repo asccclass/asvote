@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html lang="zh_TW">
+<head>
+   <meta charset="utf-8">
+   <title>Google Login Test</title>
+</head>
+<body>
+   <div id="No1"><span class="material-icons-sharp">thumb_up_alt</span>0</div>
+   <button hx-on="click:vote('google', 1)"> Vote Me </button>
+<script>
+   var newWindow;
+   function voteError(msg) {
+      newWindow.close();
+      alert(msg);
+   }
+
+   function closeClient(voteNo) {
+      newWindow.close();
+      alert(voteNo + "號投票完畢");
+   }
+   function vote(typez, id) {
+      let url = "https://devwteamapi.test5.sinica.edu.tw/" + typez + "login?site=" + id;
+      let params = "toolbar=no,location=no,menubar=no,width=400,height=400";
+      newWindow = window.open(url, "_blank", params);
+      newWindow.focus();
+    }
+</script>
+   <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+</body>
+</html>
