@@ -6,16 +6,13 @@ import(
    "github.com/gorilla/mux"
    "github.com/asccclass/serverstatus"
    "github.com/asccclass/staticfileserver"
-   "github.com/asccclass/staticfileserver/libs/socketio"
 )
 
 // Create your Router function
 func NewRouter(srv *SherryServer.ShryServer, documentRoot string)(*mux.Router) {
    router := mux.NewRouter()
 
-   // socketio
-   skio := SherrySocketIO.NewSrySocketio()
-   skio.AddRouter(router)
+   srv.SSE.AddRouter(router) // add sse
 
    // Google Login
    vote, _ := NewVote(srv)
