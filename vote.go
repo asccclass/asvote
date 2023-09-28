@@ -122,7 +122,16 @@ func(app *SryVote) Callback(w http.ResponseWriter, r *http.Request) {
       return
    }
    // 投票完成
-   fmt.Fprintf(w, "<script>self.opener.closeClient(%d);</script>", num)
+   w.Header().Set("Content-Type", "text/html;charset=UTF-8")
+   w.Header().Set("Cross-Origin-Opener-Policy", "same-origin-allow-popups")
+   w.Header().Set("Cross-Origin-Opener-Policy", "same-origin")
+   w.Header().Set("Cross-Origin-Opener-Policy", "unsafe-none")
+   w.WriteHeader(http.StatusOK)
+   fmt.Fprintf(w, "<html><body><script>alert('" + voteData[1] + "號投票完畢');window.close();</script><body></html>")
+
+   sseStr := fmt.Sprintf("{\"stNo\":%s, \"count\":%d}", voteData[1], num)
+fmt.Println(sseStr)
+   go app.Srv.SSE.ReplyMessage("", sseStr)
 }
 
 // Google Login
@@ -130,7 +139,7 @@ func(app *SryVote) AddRouter(router *mux.Router) {
    app.Srv.LineLogin.AddRouter(router)		       // 加入 Line Login
    router.HandleFunc("/g/callback", app.Callback)      // Google 認證後回傳的資訊
    router.HandleFunc("/f/callback", app.Callback)      // Google 認證後回傳的資訊
-   router.HandleFunc("/vote/status", app.GetStatusFromWeb)	// 取得目前全部的投票資訊
+   router.HandleFunc("/status/{voteNo}", app.GetStatusFromWeb).Methods("GET") // 取得目前全部的投票資訊
 }
 
 func NewVote(srv *SherryServer.ShryServer)(*SryVote, error) {
