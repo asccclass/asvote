@@ -46,7 +46,7 @@ func(app *SryVote) Save(voteNo string, profile *UserProfile)(int, error) {
       return num, err
    }
    if num > 0 {
-      return num, fmt.Errorf("<script>self.opener.afterVote('您已經投過票(You have already voted)');window.close();</script>")
+      return num, fmt.Errorf("<script>alert('您已經投過票(You have already voted)');window.close();</script>")
    }
 
    sql := "insert into votez(googleID,email,voteNo,voteDate) values(?,?,?,?)"

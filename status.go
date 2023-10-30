@@ -70,6 +70,7 @@ func(app *SryVote) Status(voteNo string)(string, error) {
 // 取得投票資訊
 func(app *SryVote) GetStatusFromWeb(w http.ResponseWriter, r *http.Request) {
    w.Header().Set("Content-Type", "application/json;charset=UTF-8")
+   w.Header().Set("Access-Control-Allow-Origin", "*")
    w.WriteHeader(http.StatusOK)
 
    webVars := mux.Vars(r)
