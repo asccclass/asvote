@@ -41,7 +41,9 @@ func(app *SryVote) Save(voteNo string, profile *UserProfile)(int, error) {
       return num, err
    }
    defer db.Close()
-   row := db.QueryRow("select count(*) from votez where voteNo=? and googleID=?", voteNo, profile.ID)
+   st := sherrytime.NewSherryTime("Asia/Taipei", "-")  // Initial
+   today := st.Today()
+   row := db.QueryRow("select count(*) from votez where voteNo=? and googleID=? and strftime('%Y-%m-%d', voreDate)=?", voteNo, profile.ID, today)
    if err := row.Scan(&num); err != nil {
       return num, err
    }
@@ -54,7 +56,6 @@ func(app *SryVote) Save(voteNo string, profile *UserProfile)(int, error) {
    if err != nil {
       return num, err
    }
-   st := sherrytime.NewSherryTime("Asia/Taipei", "-")  // Initial
    _, err = stmt.Exec(profile.ID, profile.Email, voteNo, st.Now())
    if err != nil {
       return num, err
